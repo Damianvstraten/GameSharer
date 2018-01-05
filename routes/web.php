@@ -11,8 +11,13 @@
 |
 */
 
+
+Route::resource('games', 'GameController', ['except' => [
+    'index'
+]]);
+
 Route::get('/', function () {
-    return view('master');
+    return view('layouts.master');
 });
 
 Auth::routes();

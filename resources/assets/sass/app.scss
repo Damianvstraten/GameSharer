@@ -7,3 +7,13 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+
+.profile_name {
+  font-weight: bold;
+  color: black;
+}
+
+li.profile_name {
+  padding: 14px;
+}
