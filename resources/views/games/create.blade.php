@@ -1,6 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
+<div class="col-md-8 col-md-offset-1">
+    <a href="{{route('games.index')}}" class="btn btn-default pull-left">Back</a>
+</div>
 <div class="col-md-8 col-md-offset-2">
     <h2>Create new game</h2>
     <form method="POST" action="{{ route('games.store') }}">

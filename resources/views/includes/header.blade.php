@@ -30,7 +30,7 @@
                 <li><a href="{{ route('register') }}">Register</a></li>
                 @else
                     <li class="profile_name">{{ Auth::user()->name }}</li>
-                    <li><a href="{{ route('home') }}">My Games</a></li>
+                    <li><a href="{{ route('games.index') }}">My Games</a></li>
                     <li>
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault();

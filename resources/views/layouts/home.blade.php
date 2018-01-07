@@ -17,12 +17,6 @@
                     <a href="{{route('games.create')}}">Create a new game</a>
                 </div>
             </div>
-
-            <div class="panel panel-default my-games">
-                <div class="panel-heading">My Games</div>
-                <div class="panel-body">
-                </div>
-            </div>
         </div>
     </div>
 </div>

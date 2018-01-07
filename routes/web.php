@@ -11,10 +11,7 @@
 |
 */
 
-
-Route::resource('games', 'GameController', ['except' => [
-    'index'
-]]);
+Route::resource('games', 'GameController')->middleware('auth');
 
 Route::get('/', function () {
     return view('layouts.master');
