@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -23,6 +15,46 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return redirect()->route('games.index');
+        $games = Game::all();
+
+        return view('layouts.home')->withGames($games);
+    }
+
+    public function search() {
+        $q = Input::get('q');
+        $games = '';
+
+        switch (Input::get('filter')) {
+            case "new":
+                $games = $this->filterByNew($q);
+                break;
+            case "upcomming":
+                $games = $this->filterByUpcomming($q);
+                break;
+            case "popular":
+                $games = $this->filterByNew($q);
+                break;
+        }
+
+        return view('layouts.home')->withGames($games);
+    }
+
+    public function filterByUpcomming($q)
+    {
+        $games = Game::where('name', 'LIKE', '%' . $q . '%')
+            ->where('release_date', '>', date('Y/m/d'))
+            ->orderBY('release_date', 'ASC')
+            ->get();
+
+        return $games;
+    }
+
+    public function filterByNew($q)
+    {
+        $games = Game::where('name', 'LIKE', '%' . $q . '%')
+            ->where('release_date', '<=', date('Y/m/d'))
+            ->get();
+
+        return $games;
     }
 }

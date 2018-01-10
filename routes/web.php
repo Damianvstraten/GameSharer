@@ -11,12 +11,21 @@
 |
 */
 
-Route::resource('games', 'GameController')->middleware('auth');
+// Auth
+Route::resource('games', 'GameController', ['except' => [
+    'show'
+]])->middleware('auth');
+
+Route::resource('games', 'GameController', ['only' => [
+    'show'
+]]);
+
 
 Route::get('/', function () {
-    return view('layouts.master');
+    return redirect('home');
 });
 
 Auth::routes();
 
+Route::get('/search', 'HomeController@search')->name('search');
 Route::get('/home', 'HomeController@index')->name('home');

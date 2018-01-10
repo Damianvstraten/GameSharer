@@ -24,8 +24,10 @@
                                 <td>{{$game->name}}</td>
                                 <td>
                                     <div>
-                                        <form>
+                                        <form method="post">
+                                            {{ csrf_field() }}
                                             <input type="checkbox" @if($game->active = true) checked @endif  data-toggle="toggle" data-onstyle="success" name="active_state">
+                                            <input type="submit" hidden>
                                         </form>
                                     </div>
                                 </td>
