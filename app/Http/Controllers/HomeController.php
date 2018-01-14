@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -11,16 +12,17 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $games = Game::all();
+        $categories = Category::orderBy('name')->get();
+        $games = Game::where('active', true)->get();
 
-        return view('layouts.home')->withGames($games);
+        return view('layouts.home')->with(array('games' => $games, 'categories' => $categories));
     }
 
     public function search() {
+        $categories = Category::orderBy('name')->get();
         $q = Input::get('q');
         $games = '';
 
@@ -36,12 +38,13 @@ class HomeController extends Controller
                 break;
         }
 
-        return view('layouts.home')->withGames($games);
+        return view('layouts.home')->with(array('games' => $games, 'categories' => $categories));
     }
 
     public function filterByUpcomming($q)
     {
         $games = Game::where('name', 'LIKE', '%' . $q . '%')
+            ->where('active', true)
             ->where('release_date', '>', date('Y/m/d'))
             ->orderBY('release_date', 'ASC')
             ->get();
@@ -52,6 +55,7 @@ class HomeController extends Controller
     public function filterByNew($q)
     {
         $games = Game::where('name', 'LIKE', '%' . $q . '%')
+            ->where('active', true)
             ->where('release_date', '<=', date('Y/m/d'))
             ->get();
 

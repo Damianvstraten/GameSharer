@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Comment;
 use App\Game;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
@@ -28,7 +29,9 @@ class GameController extends Controller
      */
     public function create()
     {
-        return view('games.create');
+        $categories = Category::orderBy('name')->get();
+
+        return view('games.create')->withCategories($categories);
     }
 
     /**
@@ -51,6 +54,7 @@ class GameController extends Controller
         $game->description = $request->description;
         $game->release_date = $request->release_date;
         $game->developer_id = Auth::id();
+        $game->category_id = $request->category;
 
         $game->save();
 
@@ -66,8 +70,11 @@ class GameController extends Controller
     public function show($id)
     {
         $game = Game::find($id);
+        $comments = Comment::where('game_id', $id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
-        return view('games.show')->withGame($game);
+        return view('games.show')->with(array('game' => $game, 'comments' => $comments));
     }
 
     /**
@@ -79,8 +86,9 @@ class GameController extends Controller
     public function edit($id)
     {
         $game = Game::find($id);
+        $categories = Category::orderBy('name')->get();
 
-        return view('games.edit')->withGame($game);
+        return view('games.edit')->with(array('game' => $game, 'categories' => $categories));
     }
 
     /**
@@ -103,6 +111,7 @@ class GameController extends Controller
         $game->name = $request->name;
         $game->description = $request->description;
         $game->release_date = $request->release_date;
+        $game->category_id = $request->category;
 
         $game->save();
 
@@ -114,10 +123,22 @@ class GameController extends Controller
      * Update the active state state in storage
      *
      * @param Request $request
-     * @param $id
+     * @param int $id
+     * @return \Illuminate\Http\Response
      */
-    public function active(Request $request, $id) {
+    public function state(Request $request, $id) {
+            if($request->active_state == 'on') {
+                $state = true;
+            } else {
+                $state = false;
+            }
 
+            $game = Game::find($id);
+            $game->active = $state;
+
+            $game->save();
+
+        return back();
     }
 
     /**

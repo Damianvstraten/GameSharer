@@ -12,6 +12,7 @@
 */
 
 // Auth
+Route::match(['put','patch'], 'games/{game}/state', 'GameController@state')->name('games.state')->middleware('auth');
 Route::resource('games', 'GameController', ['except' => [
     'show'
 ]])->middleware('auth');
@@ -20,6 +21,7 @@ Route::resource('games', 'GameController', ['only' => [
     'show'
 ]]);
 
+Route::resource('comments', 'CommentController')->middleware('auth');
 
 Route::get('/', function () {
     return redirect('home');
