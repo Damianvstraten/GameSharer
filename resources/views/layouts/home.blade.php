@@ -35,7 +35,7 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Title</th>
                                 <th scope="col">Release Date</th>
-                                <th scope="col"></th>
+                                <th scope="col">Developer</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -43,9 +43,8 @@
                                 <tr>
                                     <th scope="row">{{$game->id}}</th>
                                     <td><a href="{{route('games.show', $game->id)}}">{{$game->name}}</a></td>
-                                    <td> {{$game->release_date}}
-                                    </td>
-                                    <td></td>
+                                    <td> {{$game->release_date}}</td>
+                                    <td>{{$game->owner->name}}</td>
                                 </tr>
                             @endforeach
                             </tbody>

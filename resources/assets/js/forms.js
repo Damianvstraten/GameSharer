@@ -20,4 +20,9 @@ $(document).ready(function(){
         //     }
         // });
     });
+
+    $('.reply-opener').on('click', function () {
+        $(this).parent().parent().parent().find('.sub-comment').collapse().toggle();
+
+    })
 });

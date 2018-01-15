@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class SubComment extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -15,15 +15,11 @@ class Comment extends Model
         'body'
     ];
 
-    public function game() {
-        return $this->belongsTo('App\Game', 'game_id');
-    }
-
     public function owner() {
         return $this->belongsTo('App\User', 'developer_id');
     }
 
-    public function subcomments(){
-        return $this->hasMany('App\SubComment', 'main_comment_id');
+    public function comment() {
+        return $this->belongsTo('App\Comment,', 'main_comment_id');
     }
 }

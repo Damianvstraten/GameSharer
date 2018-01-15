@@ -16,7 +16,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::orderBy('name')->get();
-        $games = Game::where('active', true)->get();
+        $games = Game::with('owner')->where('active', true)->get();
 
         return view('layouts.home')->with(array('games' => $games, 'categories' => $categories));
     }

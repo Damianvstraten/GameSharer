@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Comment;
 use App\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class GameController extends Controller
 {
@@ -69,12 +69,22 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        $game = Game::find($id);
-        $comments = Comment::where('game_id', $id)
-            ->orderBy('created_at', 'DESC')
-            ->get();
+        $game = Game::with(['owner', 'category' ,'comments.owner', 'comments.subcomments.owner', 'comments' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }, 'comments.subcomments' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }])->where('id', $id)->get();
 
-        return view('games.show')->with(array('game' => $game, 'comments' => $comments));
+//        DB::enableQueryLog();
+//        DB::listen(
+//            function ($query) {
+//                var_dump($query->sql);
+//                var_dump($query->bindings);
+//            }
+//        );
+        //dd($game->toArray());
+
+        return view('games.show')->withGame($game[0]);
     }
 
     /**

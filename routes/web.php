@@ -21,7 +21,13 @@ Route::resource('games', 'GameController', ['only' => [
     'show'
 ]]);
 
-Route::resource('comments', 'CommentController')->middleware('auth');
+Route::resource('comments', 'CommentController', ['only' => [
+    'store'
+]])->middleware('auth');
+
+Route::resource('subcomments', 'SubCommentController',  ['only' => [
+    'store'
+]])->middleware('auth');
 
 Route::get('/', function () {
     return redirect('home');

@@ -41,11 +41,7 @@
                                             <a class="btn btn-primary" href="{{ route('games.edit', $game->id) }}">Edit</a>
                                         </div>
                                         <div style="display: inline-block; padding-right: 10px">
-                                            <form action="{{route('games.destroy',$game->id)}}" method="post">
-                                                {{ csrf_field() }}
-                                                <input type="submit" value="Delete" class="btn btn-danger">
-                                                {{ method_field('DELETE') }}
-                                            </form>
+                                            <button class="btn btn-danger" data-toggle="modal" data-target=".delete-form">Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -57,8 +53,12 @@
                 @endif
             </div>
         </div>
-        <a class="btn btn-primary" href="{{route('games.create')}}">Creat new game</a>
+        <a class="btn btn-primary" href="{{route('games.create')}}">Create new game</a>
     </div>
+
+    @if(count($userGames) > 0)
+        @include('includes.delete-popup')
+    @endif
 @endsection
 
 @section('script')
