@@ -7,6 +7,7 @@ use App\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class GameController extends Controller
 {
@@ -43,8 +44,9 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, array(
-            'name' => 'required',
+            'name' => 'required|max:255',
             'description' => 'required',
+            'category' => 'required',
             'release_date' => 'required|date',
         ));
 
@@ -58,6 +60,8 @@ class GameController extends Controller
 
         $game->save();
 
+        Session::flash('success_created',' "' . $game->name .  '" is successfully created!');
+
         return redirect()->route('games.show', $game->id);
     }
 
@@ -69,7 +73,7 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        $game = Game::with(['owner', 'category' ,'comments.owner', 'comments.subcomments.owner', 'comments' => function($query) {
+        $game = Game::with(['owner', 'ratings' ,'comments.owner', 'comments.subcomments.owner', 'comments' => function($query) {
             $query->orderBy('created_at', 'desc');
         }, 'comments.subcomments' => function($query) {
             $query->orderBy('created_at', 'desc');
@@ -90,8 +94,8 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return $this
      */
     public function edit($id)
     {
@@ -125,7 +129,9 @@ class GameController extends Controller
 
         $game->save();
 
-        return redirect()->route('games.show', $game->id);
+        Session::flash('success_updated','Your changes are successfully saved!');
+
+        return redirect()->route('games.edit', $game->id);
     }
 
     /**
@@ -162,6 +168,8 @@ class GameController extends Controller
         $game = Game::find($id);
 
         $game->delete();
+
+        Session::flash('success_deleted',' "' . $game->name .  '" is successfully deleted!');
 
         return redirect()->route('games.index');
     }

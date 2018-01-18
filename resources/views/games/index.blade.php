@@ -5,6 +5,7 @@
 
 @section('content')
     <div class="container">
+        @include('includes.messages.success_message', ['key_name' => 'success_deleted'])
         <h1 class="panel-heading"> My Games</h1>
         <div class="panel">
             <div class="panel-body">
@@ -62,6 +63,5 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript" src="{{ URL::asset('js/forms.js')}}"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 @endsection

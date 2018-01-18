@@ -2,6 +2,10 @@
     <div style="margin: 0; border-bottom: 0;  border-bottom-right-radius: 0; border-bottom-left-radius: 0" class="panel panel-default">
         <h2 style="margin-bottom: 0; padding: 0 0 20px 15px">Comments</h2>
     </div>
+
+    @include('includes.success_message', ['key_name' => 'succes_comment'])
+    @include('includes.error_message', ['field_name' => 'sub_comment'])
+
     @foreach($game->comments as $comment)
         <div class="main-comment">
             <div class="panel panel-default">
@@ -27,7 +31,7 @@
                         <form method="POST" action="{{route('subcomments.store')}}">
                             {{ csrf_field() }}
                             <div class="form-group">
-                                <textarea style="resize: none" class="form-control" rows="3" name="body"></textarea>
+                                <textarea style="resize: none" class="form-control" rows="3" name="sub_comment"></textarea>
                             </div>
                             <div class="form-group">
                                 <input type="number" name="game_id" hidden value="{{$game->id}}">
@@ -70,8 +74,10 @@
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label style="font-size: 16px">Say something about {{$game->name}}:</label>
-                    <textarea style="resize: none" class="form-control" rows="5" name="body"></textarea>
+                    <textarea style="resize: none" class="form-control" rows="5" name="main_comment"></textarea>
                 </div>
+
+                @include('includes.error_message', ['field_name' => 'main_comment'])
                 <div class="form-group">
                     <input type="number" name="game_id" hidden value="{{$game->id}}">
                     <input type="submit" class="btn btn-primary" value="Post your comment">

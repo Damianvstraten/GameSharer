@@ -31,7 +31,7 @@ class HomeController extends Controller
                 $games = $this->filterByNew($q);
                 break;
             case "upcomming":
-                $games = $this->filterByUpcomming($q);
+                $games = $this->filterByPopular($q);
                 break;
             case "popular":
                 $games = $this->filterByNew($q);
@@ -42,6 +42,17 @@ class HomeController extends Controller
     }
 
     public function filterByUpcomming($q)
+    {
+        $games = Game::where('name', 'LIKE', '%' . $q . '%')
+            ->where('active', true)
+            ->where('release_date', '>', date('Y/m/d'))
+            ->orderBY('release_date', 'ASC')
+            ->get();
+
+        return $games;
+    }
+
+    public function filterByPopular($q)
     {
         $games = Game::where('name', 'LIKE', '%' . $q . '%')
             ->where('active', true)

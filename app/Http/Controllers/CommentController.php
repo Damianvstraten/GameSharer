@@ -3,21 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -27,62 +18,19 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, array(
-            'body' => 'required',
+            'main_comment' => 'required',
         ));
 
         $comment = new Comment();
 
-        $comment->body = $request->body;
+        $comment->body = $request->main_comment;
         $comment->developer_id = Auth::id();
         $comment->game_id = $request->game_id;
 
         $comment->save();
 
+        Session::flash('succes_comment','Your comment is successfully posted!');
+
         return back();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

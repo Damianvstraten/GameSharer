@@ -25,6 +25,10 @@ Route::resource('comments', 'CommentController', ['only' => [
     'store'
 ]])->middleware('auth');
 
+Route::resource('ratings', 'RatingController', ['only' => [
+    'store'
+]])->middleware('auth');
+
 Route::resource('subcomments', 'SubCommentController',  ['only' => [
     'store'
 ]])->middleware('auth');
