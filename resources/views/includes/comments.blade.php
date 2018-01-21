@@ -3,8 +3,8 @@
         <h2 style="margin-bottom: 0; padding: 0 0 20px 15px">Comments</h2>
     </div>
 
-    @include('includes.success_message', ['key_name' => 'succes_comment'])
-    @include('includes.error_message', ['field_name' => 'sub_comment'])
+    @include('includes.messages.success_message', ['key_name' => 'succes_comment'])
+    @include('includes.messages.error_message', ['field_name' => 'sub_comment'])
 
     @foreach($game->comments as $comment)
         <div class="main-comment">
@@ -77,7 +77,7 @@
                     <textarea style="resize: none" class="form-control" rows="5" name="main_comment"></textarea>
                 </div>
 
-                @include('includes.error_message', ['field_name' => 'main_comment'])
+                @include('includes.messages.error_message', ['field_name' => 'main_comment'])
                 <div class="form-group">
                     <input type="number" name="game_id" hidden value="{{$game->id}}">
                     <input type="submit" class="btn btn-primary" value="Post your comment">

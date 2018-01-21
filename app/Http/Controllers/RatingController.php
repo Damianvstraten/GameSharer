@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Rating;
+use App\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -27,6 +28,9 @@ class RatingController extends Controller
         $rating->game_id = $request->game_id;
 
         $rating->save();
+
+        $game = Game::find($request->game_id);
+        $game->recalculateRating();
 
         Session::flash('success_rating','Thanks for rating this game!');
 

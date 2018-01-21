@@ -31,7 +31,20 @@ class User extends Authenticatable
         return $this->hasMany('App\Comments', 'user_id');
     }
 
+    public function sub_comments() {
+        return $this->hasMany('App\Comments', 'user_id');
+    }
+
     public function ratings() {
         return $this->hasMany('App\Rating', 'user_id');
+    }
+
+    public function games() {
+        return $this->hasMany('App\Game', 'developer_id');
+    }
+
+    public function isAdmin()
+    {
+        return (\Auth::check() && $this->admin == true);
     }
 }

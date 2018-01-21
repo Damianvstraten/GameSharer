@@ -21,6 +21,7 @@ class CreateGamesTable extends Migration
             $table->date('release_date');
             $table->boolean('active')->default(true);
             $table->integer('category_id');
+            $table->double('rating', 3, 1)->default(0);
             $table->timestamps();
         });
     }

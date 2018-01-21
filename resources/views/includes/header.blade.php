@@ -30,7 +30,11 @@
                 <li><a href="{{ route('register') }}">Register</a></li>
                 @else
                     <li class="profile_name">{{ Auth::user()->name }}</li>
-                    <li><a href="{{ route('games.index') }}">My Games</a></li>
+                    @if(Auth::check() and Auth::user()->isAdmin())
+                        &nbsp;<li><a href="{{route('admin')}}">Adminpanel</a></li>
+                    @else
+                        <li><a href="{{ route('games.index') }}">My Games</a></li>
+                    @endif
                     <li>
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault();

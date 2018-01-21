@@ -14,7 +14,7 @@
                 <label for="name">Title</label>
                 <input type="text" class="form-control" id="name" placeholder="Enter title" name="name" value="{{old('name')}}">
 
-                @include('includes.includes.messages.error_message', ['field_name' => 'name'])
+                @include('includes.messages.error_message', ['field_name' => 'name'])
             </div>
             <div class="form-group">
                 <div class="form-group">

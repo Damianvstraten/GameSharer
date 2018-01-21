@@ -11,33 +11,28 @@
 |
 */
 
-// Auth
-Route::match(['put','patch'], 'games/{game}/state', 'GameController@state')->name('games.state')->middleware('auth');
-Route::resource('games', 'GameController', ['except' => [
-    'show'
-]])->middleware('auth');
+// User
+Route::middleware('auth')->group(function () {
+    Route::match(['put','patch'], 'games/{game}/state', 'GameController@state')->name('games.state');
+    Route::resource('comments', 'CommentController', ['only' => ['store']]);
+    Route::resource('ratings', 'RatingController', ['only' => ['store']]);
+    Route::resource('subcomments', 'SubCommentController',  ['only' => ['store']]);
+    Route::resource('games', 'GameController', ['except' => ['show']]);
+});
 
-Route::resource('games', 'GameController', ['only' => [
-    'show'
-]]);
+// Admin
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('admin', 'AdminController@index')->name('admin');
+    Route::post('admin', 'AdminController@storeCategory')->name('store.category');
+    Route::match(['put', 'patch'], 'admin/{user}/state', 'AdminController@switchAdmin')->name('user.update');
+});
 
-Route::resource('comments', 'CommentController', ['only' => [
-    'store'
-]])->middleware('auth');
+// No auth
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('games/{game}', 'GameController@show')->name('games.show');
 
-Route::resource('ratings', 'RatingController', ['only' => [
-    'store'
-]])->middleware('auth');
-
-Route::resource('subcomments', 'SubCommentController',  ['only' => [
-    'store'
-]])->middleware('auth');
 
 Route::get('/', function () {
     return redirect('home');
 });
-
-Auth::routes();
-
-Route::get('/search', 'HomeController@search')->name('search');
-Route::get('/home', 'HomeController@index')->name('home');

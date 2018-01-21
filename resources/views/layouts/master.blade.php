@@ -12,7 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @yield('style')
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -29,6 +29,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/forms.js')}}"></script>
-    @yield('script')
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </body>
 </html>

@@ -1,8 +1,4 @@
 @extends('layouts.master')
-@section('style')
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-@endsection
-
 @section('content')
     <div class="container">
         @include('includes.messages.success_message', ['key_name' => 'success_deleted'])
@@ -42,7 +38,11 @@
                                             <a class="btn btn-primary" href="{{ route('games.edit', $game->id) }}">Edit</a>
                                         </div>
                                         <div style="display: inline-block; padding-right: 10px">
-                                            <button class="btn btn-danger" data-toggle="modal" data-target=".delete-form">Delete</button>
+                                            <form action="{{route('games.destroy',$game->id)}}" method="post">
+                                                {{ csrf_field() }}
+                                                <input type="submit" value="Delete" class="btn btn-danger" style="margin-right: 10px">
+                                                {{ method_field('DELETE') }}
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -56,12 +56,4 @@
         </div>
         <a class="btn btn-primary" href="{{route('games.create')}}">Create new game</a>
     </div>
-
-    @if(count($userGames) > 0)
-        @include('includes.delete-popup')
-    @endif
-@endsection
-
-@section('script')
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 @endsection

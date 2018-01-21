@@ -12,7 +12,7 @@ use Session;
 class GameController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all games from the user
      *
      * @return \Illuminate\Http\Response
      */
@@ -73,20 +73,17 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        $game = Game::with(['owner', 'ratings' ,'comments.owner', 'comments.subcomments.owner', 'comments' => function($query) {
+        if(Game::find($id) === null) {
+            return redirect('home');
+        } elseif(Game::find($id)->whereNull('developer_id', Auth::id())->where('active', false)) {
+
+        };
+
+        $game = Game::with(['owner', 'category', 'ratings','comments.owner', 'comments.subcomments.owner', 'comments' => function($query) {
             $query->orderBy('created_at', 'desc');
         }, 'comments.subcomments' => function($query) {
             $query->orderBy('created_at', 'desc');
         }])->where('id', $id)->get();
-
-//        DB::enableQueryLog();
-//        DB::listen(
-//            function ($query) {
-//                var_dump($query->sql);
-//                var_dump($query->bindings);
-//            }
-//        );
-        //dd($game->toArray());
 
         return view('games.show')->withGame($game[0]);
     }
@@ -165,12 +162,20 @@ class GameController extends Controller
      */
     public function destroy($id)
     {
+        if(Auth::user()->isAdmin()) {
+
+        }
+
         $game = Game::find($id);
 
         $game->delete();
 
         Session::flash('success_deleted',' "' . $game->name .  '" is successfully deleted!');
 
-        return redirect()->route('games.index');
+        if(Auth::user()->isAdmin()) {
+            return redirect()->route('admin');
+        } else {
+            return redirect()->route('games.index');
+        }
     }
 }
